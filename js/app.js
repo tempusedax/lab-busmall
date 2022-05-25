@@ -13,6 +13,10 @@ let allAdverts = [];
 let indexArray = [];
 
 
+let retreivedAdverts = localStorage.getItem('adverts');
+
+let parsedAdverts = JSON.parse(retreivedAdverts);
+
 function Advert(name, fileExtension = 'jpg') {
   this.name = name;
   this.views = 0;
@@ -20,7 +24,9 @@ function Advert(name, fileExtension = 'jpg') {
   this.photo = `img/${name}.${fileExtension}`;
   allAdverts.push(this);
 }
-
+if(retreivedAdverts) {
+  allAdverts = parsedAdverts;
+} else{
 new Advert('bag');
 new Advert('banana');
 new Advert('bathroom');
@@ -40,18 +46,12 @@ new Advert('tauntaun');
 new Advert('unicorn');
 new Advert('water-can');
 new Advert('wine-glass');
-
+}
 
 function getRandomIndex() {
   return Math.floor(Math.random() * allAdverts.length);
 }
 
-  // NOTE: Your lab will require you to have 3 unique images per round
-  // HINT: Consider using a container to store your random indexes and then validate if there are 3 unique numbers in that container
-  // while (imgOneIndex === imgTwoIndex || imgOneIndex === imgThreeIndex || imgTwoIndex === imgThreeIndex) {
-  //   imgTwoIndex = getRandomIndex();
-  //   imgThreeIndex = getRandomIndex();
-  // }
   function renderImgs() {
     while(indexArray.length < 6){
       let num = getRandomIndex();
@@ -85,6 +85,7 @@ function getRandomIndex() {
 
 renderImgs();
 
+
 // ********* EVENT HANDLERS *******************
 function handleClick(event) {
   voteCount--;
@@ -99,6 +100,15 @@ function handleClick(event) {
   //rerender 2 new images
   renderImgs();
   // once voting rounds completed - stop clicks
+  if (voteCount === 0) {
+    imgContainer.removeEventListener('click', handleClick);
+    let stringifiedAdverts = JSON.stringify(allAdverts);
+    console.log(stringifiedAdverts);
+    localStorage.setItem('adverts', stringifiedAdverts)
+
+
+
+  }
 }
 
 function renderChart() {
@@ -109,7 +119,7 @@ function renderChart() {
   for (let i = 0; i < allAdverts.length; i++) {
 
     picName.push(allAdverts[i].name);
-    picVote.push(allAdverts[i].vote);
+    picVote.push(allAdverts[i].votes);
     picViews.push(allAdverts[i].views);
   }
 
@@ -135,7 +145,7 @@ function renderChart() {
           'rgba(155, 99, 132, 0.2)',
         ],
         borderColor: [
-          'rgba(255, 159, 64, 1)'
+          'rgba(155, 159, 64, 1)'
         ],
         borderWidth: 1
       }]

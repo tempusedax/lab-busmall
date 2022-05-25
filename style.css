@@ -3,4 +3,34 @@ img {
   border: 1px solid black;
 }
 
+#center-page {
+  position: absolute;
+
+}
+
+#product-Container {
+  display: flex;
+  justify-content: space-around;
+  padding: 30px;
+
+}
+
+img {
+  border: 5px solid silver;
+  width: 300px;
+  height: 300px;
+  margin: 20px;
+
+
+}
+
+#show-results-button {
+  display: flex;
+  justify-content: center;
+  background-color:dimgrey
+  color:brown
+
+}
+
+
 
